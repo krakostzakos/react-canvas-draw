@@ -15,7 +15,8 @@ class Demo extends Component {
     imgs: [
       "https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg",
       "https://i.imgur.com/a0CGGVC.jpg"
-    ]
+    ],
+    savedBase64Img: ""
   };
 
   componentDidMount() {
@@ -125,7 +126,7 @@ class Demo extends Component {
           This part got me most excited. Very easy to use saving and loading of
           drawings. It even comes with a customizable loading speed to control
           whether your drawing should load instantly (loadTimeOffset = 0) or
-          appear after some time (loadTimeOffset > 0){" "}
+          appear after some time (loadTimeOffset &gt; 0){" "}
           <span>{`<CanvasDraw loadTimeOffset={10} />`}</span>
         </p>
         <p>Try it out! Draw something, hit "Save" and then "Load".</p>
@@ -156,8 +157,12 @@ class Demo extends Component {
           </button>
           <button
             onClick={() => {
-              console.log(this.saveableCanvas.getDataURL());
-              alert("DataURL written to console")
+                const base64Img = this.saveableCanvas.getDataURL("png", true);
+
+                this.setState({
+                    savedBase64Img: base64Img
+                  });
+
             }}
           >
             GetDataURL
@@ -210,7 +215,21 @@ class Demo extends Component {
           lazyRadius={this.state.lazyRadius}
           canvasWidth={this.state.width}
           canvasHeight={this.state.height}
+          imgSrc="https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg"
         />
+
+        {this.state.savedBase64Img &&
+            <React.Fragment>
+                <h4>The base64 image from getDataURL:</h4>
+                <img
+                    src={this.state.savedBase64Img}
+                    alt="The saved base64 representation"
+                    width={this.state.width}
+                    height={this.state.height}
+                />
+            </React.Fragment>
+        }
+
         <p>
           The following is a disabled canvas with a hidden grid that we use to
           load & show your saved drawing.

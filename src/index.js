@@ -196,8 +196,21 @@ export default class CanvasDraw extends PureComponent {
     if (useBgImage) {
       if (!this.props.imgSrc) return "Background image source not set";
 
-      // Write the background image
+      // Write the background image to the grid canvas
       this.drawImage();
+
+      // copy grid canvas to drawing canvas
+      this.ctx.drawing.drawImage(
+        this.canvas.grid,
+        0,
+        0,
+        this.canvas.drawing.width,
+        this.canvas.drawing.height
+      );
+
+    this.clearWindow(this.ctx.grid);
+
+
     } else if (backgroundColour != null) {
       //set background color
       context.fillStyle = backgroundColour;
